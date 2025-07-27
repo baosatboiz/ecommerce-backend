@@ -20,5 +20,8 @@ public class Product {
     private String imageUrl;
     @ManyToOne
     private Category category;
+    @ManyToOne
+    private User seller;
+
 
 }
