@@ -1,20 +1,20 @@
 package org.example.ecommercewebsite.dto.request;
 
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.RequiredArgsConstructor;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.math.BigDecimal;
 import java.util.List;
 
-@Getter
-@Setter
+@Data
+@RequiredArgsConstructor
 @AllArgsConstructor
-@NoArgsConstructor
-public class ProductRequest {
+public class ProductJsonRequest {
     private String name;
     private String description;
     private BigDecimal price;
     private Long categoryId;
-    private List<MultipartFile> images;
-
+    private List<String> image_urls;
 }

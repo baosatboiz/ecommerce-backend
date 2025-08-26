@@ -1,7 +1,9 @@
 package org.example.ecommercewebsite.controller;
 
 import lombok.RequiredArgsConstructor;
+import org.example.ecommercewebsite.dto.request.ProductJsonRequest;
 import org.example.ecommercewebsite.dto.request.ProductRequest;
+import org.example.ecommercewebsite.dto.response.ProductResponse;
 import org.example.ecommercewebsite.entity.Product;
 import org.example.ecommercewebsite.entity.User;
 import org.example.ecommercewebsite.service.ProductService;
@@ -17,11 +19,11 @@ import java.util.List;
 public class ProductController {
    private final ProductService productService;
    @GetMapping("/product")
-    public List<Product> findAll(@RequestParam(required = false) Long sellerId ,
-                                 @RequestParam(required = false) String keyWord,
-                                 @RequestParam(required = false)BigDecimal minPrice,
-                                 @RequestParam(required = false) BigDecimal maxPrice,
-                                 @RequestParam(required = false) Long categoryId) {
+    public List<ProductResponse> findAll(@RequestParam(required = false) Long sellerId ,
+                                         @RequestParam(required = false) String keyWord,
+                                         @RequestParam(required = false)BigDecimal minPrice,
+                                         @RequestParam(required = false) BigDecimal maxPrice,
+                                         @RequestParam(required = false) Long categoryId) {
        if(sellerId != null){
            return productService.getProductsBySeller(sellerId);
        }
@@ -33,10 +35,18 @@ public class ProductController {
        }
        return productService.getAllProducts();
    }
-
+   @GetMapping("/product/{id}")
+   public ProductResponse findById(@PathVariable Long id) {
+       return productService.getProductById(id);
+   }
    @PostMapping("/product")
    public ResponseEntity<?> createProduct(@ModelAttribute  ProductRequest productRequest, @AuthenticationPrincipal User user) {
        productService.createProduct(productRequest,user);
+       return ResponseEntity.ok().build();
+   }
+   @PostMapping("/json-product")
+   public ResponseEntity<?> createJsonProduct(@RequestBody List<ProductJsonRequest> productJsonRequest,@AuthenticationPrincipal User user) {
+       productService.createProductFromJson(productJsonRequest,user);
        return ResponseEntity.ok().build();
    }
    @PutMapping("/product/{id}")
