@@ -1,6 +1,7 @@
 package org.example.ecommercewebsite.controller;
 
 import lombok.RequiredArgsConstructor;
+import org.example.ecommercewebsite.dto.request.Product2Request;
 import org.example.ecommercewebsite.dto.request.ProductJsonRequest;
 import org.example.ecommercewebsite.dto.request.ProductRequest;
 import org.example.ecommercewebsite.dto.response.ProductResponse;
@@ -58,5 +59,14 @@ public class ProductController {
     public ResponseEntity<?> deleteProduct(@PathVariable Long id) {
        productService.deleteProduct(id);
        return ResponseEntity.ok().build();
+   }
+   @PostMapping("/json2-product")
+    public ResponseEntity<Void> createJson2Product(@RequestBody List<Product2Request> product2Request,@AuthenticationPrincipal User user){
+       productService.createProduct2(product2Request,user);
+       return ResponseEntity.ok().build();
+   }
+   @GetMapping("/{variantId}/stock")
+    public ResponseEntity<Boolean> checkStock(@PathVariable Long variantId){
+       return ResponseEntity.ok(productService.checkStock(variantId));
    }
 }

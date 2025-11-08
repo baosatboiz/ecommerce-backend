@@ -1,5 +1,6 @@
 package org.example.ecommercewebsite.service;
 
+import org.example.ecommercewebsite.dto.request.Product2Request;
 import org.example.ecommercewebsite.dto.request.ProductJsonRequest;
 import org.example.ecommercewebsite.dto.request.ProductRequest;
 import org.example.ecommercewebsite.dto.response.ProductResponse;
@@ -19,4 +20,6 @@ public interface ProductService {
     List<ProductResponse> searchProducts(String search);
     List<ProductResponse> filterProducts(BigDecimal minPrice, BigDecimal maxPrice,Long category);
     void createProductFromJson(List<ProductJsonRequest> productJsonRequest, User seller);
+    void createProduct2(List<Product2Request> product2Requests,User seller);
+    boolean checkStock(Long variantId);
 }

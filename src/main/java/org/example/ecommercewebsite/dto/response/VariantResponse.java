@@ -6,17 +6,14 @@ import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
 import java.util.List;
-
+import java.util.Map;
 @Data
-@AllArgsConstructor
 @NoArgsConstructor
-public class ProductResponse {
+@AllArgsConstructor
+public class VariantResponse {
     private Long id;
-    private String name;
     private BigDecimal price;
-    private List<String> imageUrls;
-    private String description;
-    private List<OptionResponse> options;
-    private List<VariantResponse> variants;
-    private String sellerName;
+    private int stock;
+    private String imgUrl;
+    private Map<String,String> attributes;
 }

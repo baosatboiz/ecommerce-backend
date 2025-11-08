@@ -9,7 +9,6 @@ import java.util.List;
 @Entity
 @Setter
 @Getter
-@Builder
 @NoArgsConstructor
 @AllArgsConstructor
 public class Product {
@@ -24,7 +23,10 @@ public class Product {
     private Category category;
     @ManyToOne
     private User seller;
-
+    @OneToMany(mappedBy = "product",cascade = CascadeType.ALL)
+    private List<Option> options;
+    @OneToMany(mappedBy = "product",cascade = CascadeType.ALL)
+    private List<ProductVariant> variants;
     @OneToMany(mappedBy = "product",cascade = CascadeType.ALL,orphanRemoval = true)
     private List<ProductImage> images;
 

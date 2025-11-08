@@ -1,6 +1,7 @@
 package org.example.ecommercewebsite.service.impl;
 
 import lombok.RequiredArgsConstructor;
+import org.example.ecommercewebsite.dto.request.Product2Request;
 import org.example.ecommercewebsite.dto.request.ProductJsonRequest;
 import org.example.ecommercewebsite.dto.request.ProductRequest;
 import org.example.ecommercewebsite.dto.response.ProductResponse;
@@ -9,6 +10,7 @@ import org.example.ecommercewebsite.entity.ProductImage;
 import org.example.ecommercewebsite.entity.User;
 import org.example.ecommercewebsite.mapper.ProductMapper;
 import org.example.ecommercewebsite.repository.ProductRepository;
+import org.example.ecommercewebsite.repository.ProductVariantRepository;
 import org.example.ecommercewebsite.service.ProductService;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -32,6 +34,7 @@ import java.util.stream.Collectors;
 public class ProductServiceImpl implements ProductService {
     private final ProductRepository productRepository;
     private final ProductMapper productMapper;
+    private final ProductVariantRepository productVariantRepository;
     @Override
     public List<ProductResponse> getAllProducts() {
         return productRepository.findAll().stream().map(productMapper::toDto).collect(Collectors.toList());
@@ -119,5 +122,24 @@ public class ProductServiceImpl implements ProductService {
                     }
                 }).toList();
         productRepository.saveAll(products);
+    }
+
+    @Override
+    public void createProduct2(List<Product2Request> product2Requests, User seller) {
+        List<Product> products = product2Requests.stream().map(productMapper::toEntity)
+                .peek(product -> {
+                    product.setSeller(seller);
+                    if(product.getImages()!=null){
+                        for(ProductImage image: product.getImages()){
+                            image.setProduct(product);
+                        }
+                    }
+                }).toList();
+        productRepository.saveAll(products);
+    }
+
+    @Override
+    public boolean checkStock(Long variantId) {
+        return productVariantRepository.existsByIdAndStockGreaterThan(variantId,0);
     }
 }
