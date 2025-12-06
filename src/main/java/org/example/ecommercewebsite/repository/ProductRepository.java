@@ -2,6 +2,7 @@ package org.example.ecommercewebsite.repository;
 
 import org.example.ecommercewebsite.entity.Product;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 
 import java.math.BigDecimal;
@@ -15,4 +16,9 @@ public interface ProductRepository extends JpaRepository<Product,Long> {
     @Query(value = "select p from Product p where (:minPrice is null or :minPrice <=p.price) and (:maxPrice is null or p.price >=:maxPrice) and (:category is null or p.category.id=:category)")
     List<Product> filterProduct(BigDecimal minPrice, BigDecimal maxPrice, Long category);
     List<Product> findByNameContainingIgnoreCase(String name);
+    @Modifying
+    @Query("update Product p set p.stock = p.stock-:quantity where p.id=:productId and p.stock>=:quantity")
+    int decreseProductStock(Long productId, int quantity);
+
+    boolean existsByIdAndStockGreaterThan(Long id, int quantity);
 }

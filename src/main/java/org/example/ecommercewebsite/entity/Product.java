@@ -19,6 +19,8 @@ public class Product {
     @Column(columnDefinition = "TEXT")
     private String description;
     private BigDecimal price;
+    private int stock;
+    private String type;
     @ManyToOne
     private Category category;
     @ManyToOne

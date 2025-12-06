@@ -22,4 +22,6 @@ public class OrderItem {
     private Order order;
     @ManyToOne
     private Product product;
+    @ManyToOne
+    private ProductVariant variant;
 }
