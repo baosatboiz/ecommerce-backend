@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.example.ecommercewebsite.dto.request.Product2Request;
 import org.example.ecommercewebsite.dto.request.ProductJsonRequest;
 import org.example.ecommercewebsite.dto.request.ProductRequest;
+import org.example.ecommercewebsite.dto.request.StockRequest;
 import org.example.ecommercewebsite.dto.response.ProductResponse;
 import org.example.ecommercewebsite.entity.Product;
 import org.example.ecommercewebsite.entity.User;
@@ -65,8 +66,8 @@ public class ProductController {
        productService.createProduct2(product2Request,user);
        return ResponseEntity.ok().build();
    }
-   @GetMapping("/{variantId}/stock")
-    public ResponseEntity<Boolean> checkStock(@PathVariable Long variantId){
-       return ResponseEntity.ok(productService.checkStock(variantId));
+   @PostMapping("/stock")
+    public ResponseEntity<Boolean> checkStock(@RequestBody StockRequest stockRequest){
+       return ResponseEntity.ok(productService.checkStock(stockRequest));
    }
 }

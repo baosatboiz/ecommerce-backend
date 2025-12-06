@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.example.ecommercewebsite.dto.request.Product2Request;
 import org.example.ecommercewebsite.dto.request.ProductJsonRequest;
 import org.example.ecommercewebsite.dto.request.ProductRequest;
+import org.example.ecommercewebsite.dto.request.StockRequest;
 import org.example.ecommercewebsite.dto.response.ProductResponse;
 import org.example.ecommercewebsite.entity.Product;
 import org.example.ecommercewebsite.entity.ProductImage;
@@ -139,7 +140,12 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public boolean checkStock(Long variantId) {
-        return productVariantRepository.existsByIdAndStockGreaterThan(variantId,0);
+    public boolean checkStock(StockRequest stockRequest) {
+        if(stockRequest.getQuantity()<0||stockRequest.getId()==null){
+            throw new IllegalArgumentException("Quantity or Product not found");
+        }
+       if(stockRequest.getType().equals("variant")) return productVariantRepository.existsByIdAndStockGreaterThan(stockRequest.getId(),stockRequest.getQuantity());
+        else if(stockRequest.getType().equals("product")) return productRepository.existsByIdAndStockGreaterThan(stockRequest.getId(),stockRequest.getQuantity());
+        else throw new IllegalArgumentException("Invalid stock request");
     }
 }
